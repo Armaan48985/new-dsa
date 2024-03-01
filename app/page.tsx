@@ -7,6 +7,7 @@ import { RootState } from "./GlobalReducer/reducers";
 import { addCompletedLevel, setCurrentLevel } from "./GlobalReducer/Slice";
 import WelcomeMessages from "./WelcomeMessages";
 import { Solitreo } from "next/font/google";
+import CurvedDashedLine from "./CurvedLine";
 
 export default function Home() {
   const [greetings, setGreetings] = useState(true);
@@ -38,7 +39,7 @@ export default function Home() {
     dispatch(addCompletedLevel(Number(b)));
     dispatch(setCurrentLevel(Number(a)));
 
-    setTimeout(() => setGreetings(false), 500);
+    setTimeout(() => setGreetings(false), 300);
   }, []);
 
   console.log(completedlevels);
@@ -54,13 +55,13 @@ export default function Home() {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => {
         if (prevIndex < messages.length - 1) {
-          return prevIndex + 1;
+          return prevIndex;
         } else {
           clearInterval(interval);
           return prevIndex;
         }
       });
-    }, 1000);
+    }, 1500);
 
     return () => clearInterval(interval);
   }, [currentIndex]);
@@ -82,35 +83,59 @@ export default function Home() {
           </button>
           <h1 className="text-5xl mt-16 mb-10">Welcome to DSA@Learner</h1>
           <ul style={{ display: "flex", flexDirection: "column" }}>
-            {levels.map((e, i) => (
-              <Link href={`levels/${e}`} key={i}>
+          {levels.map((e, i) => (
+    <div key={i}>
+        {i < completedlevels ? ( // Render Link only if level is unlocked/completed
+            <Link href={`levels/${e}`} className="relative">
                 <li
-                  style={{
+                    style={{
+                        width: "180px", // Set width and height for circle
+                        height: "180px",
+                        borderRadius: "50%", // Make it circular
+                        backgroundColor: "#4A90E2", // Always use blue color for completed levels
+                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add shadow
+                        marginBottom: i % 2 === 0 ? "80px" : "0", // Add margin to alternate items
+                        marginLeft: i % 2 === 0 ? "0" : "400px", // Adjust margin for snake pattern
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "relative", // Position relative for absolute positioning of line
+                    }}
+                    className="hover:scale-105 duration-200 hover:border-2 border-blue-700 p-7"
+                >
+                    <span
+                        style={{
+                            color: "white",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        {e}
+                    </span>
+                </li>
+            </Link>
+        ) : (
+            <li // Render a disabled style for locked levels
+                style={{
                     width: "180px", // Set width and height for circle
                     height: "180px",
                     borderRadius: "50%", // Make it circular
-                    backgroundColor:
-                      e <= completedlevels ? "#4A90E2" : "#CCCCCC",
+                    backgroundColor: "#CCCCCC", // Use gray color for locked levels
                     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add shadow
-                    marginBottom: i % 2 === 0 ? "60px" : "0", // Add margin to alternate items
+                    marginBottom: i % 2 === 0 ? "80px" : "0", // Add margin to alternate items
                     marginLeft: i % 2 === 0 ? "0" : "400px", // Adjust margin for snake pattern
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                  }}
-                  className="hover:scale-105 duration-200 hover:border-2 border-blue-700 p-7"
-                >
-                  <span
-                    style={{
-                      color: "white",
-                      fontWeight: e <= completedlevels ? "bold" : "normal",
-                    }}
-                  >
-                    {e}
-                  </span>
-                </li>
-              </Link>
-            ))}
+                    position: "relative", // Position relative for absolute positioning of line
+                }}
+                className="p-7" // No hover effects for locked levels
+            >
+                <span style={{ color: "#999999" }}>{e}</span>
+            </li>
+        )}
+    </div>
+))}
+
           </ul>
         </div>
       )}

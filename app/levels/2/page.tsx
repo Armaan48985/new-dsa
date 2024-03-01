@@ -20,7 +20,7 @@ const page = () => {
     dispatch(setCurrentLevel(3));
     dispatch(addCompletedLevel(currentLevel+1));
     localStorage.setItem("currentlvl", "3");
-    localStorage.setItem("levelscompleted", JSON.stringify(completedlevels+1));
+    localStorage.setItem("levelscompleted", JSON.stringify(3));
   };
 
 
