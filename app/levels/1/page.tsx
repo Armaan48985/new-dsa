@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Typewriter from "typewriter-effect";
 
 const page = () => {
   const dispatch = useDispatch();
@@ -22,12 +23,12 @@ const page = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
 
-  const handleSubmit = (e:any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     setIsAnswered(true);
   };
 
-  const handleOptionClick = (option:string) => {
+  const handleOptionClick = (option: string) => {
     if (!isAnswered) {
       setSelectedOption(option);
     }
@@ -37,15 +38,28 @@ const page = () => {
     dispatch(setCurrentLevel(2));
     dispatch(addCompletedLevel(currentLevel + 1));
     localStorage.setItem("currentlvl", "2");
-    localStorage.setItem(
-      "levelscompleted",
-      JSON.stringify(2)
-    );
+    localStorage.setItem("levelscompleted", JSON.stringify(2));
   };
 
   return (
-    <div className="w-full h-auto flex pl-10 flex-col">
-      <h1 className="text-8xl font-bold my-20">What is DSA??</h1>
+    <div className="w-full h-auto flex items-center pl-10 flex-col">
+      <h1 className="section-header py-10">Well what is DSA??</h1>
+
+      <Typewriter
+        onInit={(typewriter) => {
+          typewriter
+            .typeString("Hello World!")
+            .callFunction(() => {
+              console.log("String typed out!");
+            })
+            .pauseFor(2500)
+            .deleteAll()
+            .callFunction(() => {
+              console.log("All strings were deleted");
+            })
+            .start();
+        }}
+      />
 
       <div className="p-4">
         <p className="mb-4 text-lg text-gray-800">
@@ -82,43 +96,59 @@ const page = () => {
         <h1 className="text-3xl font-bold text-center mb-8">Simple Quiz</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-8">
-            <p className="mb-8">1. What is the capital of France?</p>
+            <p className="mb-8">Which is the most used language for dsa?</p>
             <div className="flex flex-col">
               <button
                 className={`${
-                  selectedOption === "paris" && isAnswered
+                  selectedOption === "java" && isAnswered
+                    ? "bg-red-500"
+                    : "bg-blue-500"
+                } text-white font-bold py-2 px-4 rounded mb-4`}
+                onClick={() => handleOptionClick("java")}
+              >
+                Java
+              </button>
+              <button
+                className={`${
+                  selectedOption && isAnswered
                     ? "bg-green-500"
-                    : selectedOption === "paris" && !isAnswered
+                    : selectedOption === "C++" && !isAnswered
                     ? "bg-red-500"
                     : "bg-blue-500"
-                } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4`}
-                onClick={() => handleOptionClick("paris")}
+                } text-white font-bold py-2 px-4 rounded mb-4`}
+                onClick={() => handleOptionClick("C++")}
               >
-                Paris
+                C++
               </button>
               <button
                 className={`${
-                  selectedOption === "london" && isAnswered
+                  selectedOption === "python" && isAnswered
                     ? "bg-red-500"
                     : "bg-blue-500"
-                } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4`}
-                onClick={() => handleOptionClick("london")}
+                } text-white font-bold py-2 px-4 rounded mb-4`}
+                onClick={() => handleOptionClick("python")}
               >
-                London
+                Python
               </button>
               <button
                 className={`${
-                  selectedOption === "berlin" && isAnswered
+                  selectedOption === "C" && isAnswered
                     ? "bg-red-500"
                     : "bg-blue-500"
-                } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-1`}
-                onClick={() => handleOptionClick("berlin")}
+                } text-white font-bold py-2 px-4 rounded mb-1`}
+                onClick={() => handleOptionClick("C")}
               >
-                Berlin
+                C
               </button>
             </div>
           </div>
         </form>
+      </div>
+
+      <div>
+        <h1>Input and Output in Java</h1>
+
+        <h2>Input</h2>
       </div>
 
       <a

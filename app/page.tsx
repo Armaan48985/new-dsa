@@ -27,7 +27,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const currentLevel = useSelector(
     (state: RootState) => state.app.currentLevel
-  );
+  ) || 1;
   const completedlevels = useSelector(
     (state: RootState) => state.app.completedLevels
   );
@@ -35,14 +35,11 @@ export default function Home() {
   useEffect(() => {
     const a = localStorage.getItem("currentlvl");
     const b = localStorage.getItem("levelscompleted") || 1;
-    console.log("locals data", b);
     dispatch(addCompletedLevel(Number(b)));
     dispatch(setCurrentLevel(Number(a)));
 
     setTimeout(() => setGreetings(false), 300);
   }, []);
-
-  console.log(completedlevels);
 
   const resetLevels = () => {
     localStorage.removeItem("currentlvl");
@@ -66,6 +63,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [currentIndex]);
 
+  console.log(currentLevel);
   return (
     <div>
       {greetings ? (
@@ -83,12 +81,12 @@ export default function Home() {
           </button>
           <h1 className="text-5xl mt-16 mb-10">Welcome to DSA@Learner</h1>
           <ul style={{ display: "flex", flexDirection: "column" }}>
-          {levels.map((e, i) => (
-    <div key={i}>
-        {i < completedlevels ? ( // Render Link only if level is unlocked/completed
-            <Link href={`levels/${e}`} className="relative">
-                <li
-                    style={{
+            {levels.map((e, i) => (
+              <div key={i}>
+                {i < completedlevels ? ( // Render Link only if level is unlocked/completed
+                  <Link href={`levels/${e}`} className="relative">
+                    <li
+                      style={{
                         width: "180px", // Set width and height for circle
                         height: "180px",
                         borderRadius: "50%", // Make it circular
@@ -100,42 +98,44 @@ export default function Home() {
                         justifyContent: "center",
                         alignItems: "center",
                         position: "relative", // Position relative for absolute positioning of line
-                    }}
-                    className="hover:scale-105 duration-200 hover:border-2 border-blue-700 p-7"
-                >
-                    <span
-                        style={{
-                            color: "white",
-                            fontWeight: "bold",
-                        }}
+                        animationDuration: "1700ms",
+                      }}
+                      className={`hover:scale-105 duration-700 hover:border-2 border-blue-700 p-7 ${
+                        currentLevel === i+1 && "animate-bounce" // Check if currentLevel matches index + 1
+                      }`}
                     >
+                      <span
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                        }}
+                      >
                         {e}
-                    </span>
-                </li>
-            </Link>
-        ) : (
-            <li // Render a disabled style for locked levels
-                style={{
-                    width: "180px", // Set width and height for circle
-                    height: "180px",
-                    borderRadius: "50%", // Make it circular
-                    backgroundColor: "#CCCCCC", // Use gray color for locked levels
-                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add shadow
-                    marginBottom: i % 2 === 0 ? "80px" : "0", // Add margin to alternate items
-                    marginLeft: i % 2 === 0 ? "0" : "400px", // Adjust margin for snake pattern
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    position: "relative", // Position relative for absolute positioning of line
-                }}
-                className="p-7" // No hover effects for locked levels
-            >
-                <span style={{ color: "#999999" }}>{e}</span>
-            </li>
-        )}
-    </div>
-))}
-
+                      </span>
+                    </li>
+                  </Link>
+                ) : (
+                  <li // Render a disabled style for locked levels
+                    style={{
+                      width: "180px", // Set width and height for circle
+                      height: "180px",
+                      borderRadius: "50%", // Make it circular
+                      backgroundColor: "#CCCCCC", // Use gray color for locked levels
+                      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add shadow
+                      marginBottom: i % 2 === 0 ? "80px" : "0", // Add margin to alternate items
+                      marginLeft: i % 2 === 0 ? "0" : "400px", // Adjust margin for snake pattern
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      position: "relative", // Position relative for absolute positioning of line
+                    }}
+                    className="p-7" // No hover effects for locked levels
+                  >
+                    <span style={{ color: "#999999" }}>{e}</span>
+                  </li>
+                )}
+              </div>
+            ))}
           </ul>
         </div>
       )}
