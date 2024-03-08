@@ -10,6 +10,9 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Typewriter from "typewriter-effect";
+// import { Typewriter } from "react-simple-typewriter";
+import { motion } from "framer-motion";
+import { MacbookScrollDemo } from "@/app/macbook";
 
 const page = () => {
   const dispatch = useDispatch();
@@ -42,32 +45,61 @@ const page = () => {
   };
 
   return (
-    <div className="w-full h-auto flex items-center pl-10 flex-col">
-      <h1 className="section-header py-10">Well what is DSA??</h1>
+    <div className="w-full h-auto flex items-center flex-col">
+      <div className="bg-gray-100 flex-center flex-col px-10 m-10 rounded-lg h-[800px]">
+        <h1 className="section-header py-10">
+          Well what is{" "}
+          <span className="font-bold">
+            <span className="text-red-500">D</span>
+            <span className="text-green-400">S</span>
+            <span className="text-yellow-300">A</span>
+          </span>
+          ??
+        </h1>
+        <Typewriter
+          options={{
+            cursorClassName: "text-xl",
+          }}
+          onInit={(typewriter) => {
+            typewriter
+              .changeDelay(100)
+              .typeString(
+                '<span class="typewriter-text pr-5 bg-blue-100 rounded-lg px-4 py-2">DSA stands for Data Structures and Algorithms but what is it??? 🤔👇👇 </span> '
+              )
+              .pauseFor(2500)
+              .typeString("<p></p>")
+              .start();
+          }}
+        />
 
-      <Typewriter
-        onInit={(typewriter) => {
-          typewriter
-            .typeString("Hello World!")
-            .callFunction(() => {
-              console.log("String typed out!");
-            })
-            .pauseFor(2500)
-            .deleteAll()
-            .callFunction(() => {
-              console.log("All strings were deleted");
-            })
-            .start();
-        }}
-      />
+        <motion.div
+          initial={{ y: 1000 }}
+          animate={{ y: 0, scale: 1 }}
+          transition={{
+            type: "spring",
+            stiffness: 60,
+            damping: 20,
+          }}
+          className=""
+        >
+          <p className="text-xl p-5 my-10 bg-pink-100 rounded-lg">
+            Data Structures and Algorithms (DSA) are important ideas in computer
+            science that help manage data effectively. Data structures are like
+            containers for storing data neatly, like boxes or shelves.
+            Algorithms are like recipes for solving problems using these
+            containers. DSA helps make software efficient by using resources
+            wisely, making programs faster, and solving problems smoothly.
+            Learning DSA helps programmers design and improve solutions for
+            real-world challenges in software, AI, and data analysis.
+          </p>
+        </motion.div>
+      </div>
+
+
+      <MacbookScrollDemo/>
 
       <div className="p-4">
-        <p className="mb-4 text-lg text-gray-800">
-          DSA stands for "Data Structures and Algorithms." In simple terms, data
-          structures are ways to organize and store data, while algorithms are
-          step-by-step procedures for solving problems or performing tasks with
-          that data.
-        </p>
+        <p className="mb-4 text-lg text-gray-800"></p>
 
         <p className="mb-4 text-lg text-gray-800">
           Think of data structures as different types of containers where you
